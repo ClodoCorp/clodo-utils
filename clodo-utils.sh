@@ -1,14 +1,14 @@
 #!/bin/bash
 
 
-function init() {
+#function init() {
 	# check default config
-	if [ -e $DEFAULT_CONFIG ]; then
-		. $DEFAULT_CONFIG
-	else
-		print_error "Config file $DEFAULT_CONFIG doesn't exist!"
-	fi
-}
+#	if [ -e $DEFAULT_CONFIG ]; then
+#		. $DEFAULT_CONFIG
+#	else
+#		print_error "Config file $DEFAULT_CONFIG doesn't exist!"
+#	fi
+#}
 
 
 # REQUIRES: 1=AuthUser 2=API_Key 3=Datacenter (KH or OVERSUN)
@@ -55,10 +55,8 @@ function auth() {
 
 # REQUIRES: 1=RequestToAPI
 function send_request_nocontent() {
-	
-	RESPONSE=`echo "$1" | grep 'HTTP/1.1' | awk '{print $2}'`
 
-	case $RESPONSE in
+	case `echo "$1" | grep 'HTTP/1.1' | awk '{print $2}'` in
 		202 ) return 0 ;;
 		204 ) return 0 ;;
 		* ) return 1 ;;
