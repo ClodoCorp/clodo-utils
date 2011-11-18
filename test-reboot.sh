@@ -15,19 +15,23 @@ function print_good() {
 
 if auth $CLODO_USER $CLODO_KEY "KH"; then
 	print_good "+ AUTH"
-	echo $API_URL
-	echo $API_TOKEN
-	echo; echo; echo
+#	echo $API_URL
+#	echo $API_TOKEN
 else
-	print_error "- AUTH"
+	print_error "- AUTH ($?)"
 	exit 1
 fi
 
-if reboot $SERVER_NUM; then
-	print_good "+ REBOOT"
-	echo;echo;echo
+#if reboot $SERVER_NUM; then
+#	print_good "+ REBOOT"
+#else
+#	print_error "- REBOOT ($?)"
+#	exit 1
+#fi
+
+if reinstall_server $SERVER_NUM 551; then
+	print_good "+ REINSTALL"
 else
-	print_error "- REBOOT"
-	echo send_request_nocontent; echo
-	echo "$(curl -I -s -H "X-Auth-Token: ${API_TOKEN}" $API_URL/servers/${SERVER_NUM}/reboot)"
+	print_error "- REINSTALL ($?)"
+	exit 1
 fi
