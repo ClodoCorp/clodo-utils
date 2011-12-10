@@ -78,6 +78,7 @@ function response_code() {
 # REQUIRES: 1=RequestToAPI
 function send_request_nocontent() {
 
+	echo $1
 	RESPONSE=`echo "$1" | grep 'HTTP/1.1' | awk '{print $2}'`
 	
 	case $RESPONSE in
@@ -161,6 +162,48 @@ echo $REQ_STRING
 }
 
 
+# name - название VPS
+# vps_title - название VPS (может использоваться либо этот параметр, либо "name")
+# vps_type - тип VPS (VirtualServer,ScaleServer)
+# vps_memory - память (для ScaleServer - нижняя граница) (в MB)
+# vps_memory_max - верхняя граница памяти для ScaleServer (в MB)
+# vps_hdd - размер диска (в GB)
+# vps_admin - тип поддержки (1 - обычная, 2 - расширенная, 3 - VIP)
+# vps_os - id ОС
+
+# REQUIRES: 1=ServerTitle, 2=MemorySize, 3=HddSize, 4=OsId; OPTIONAL: 5=AdministrationType
+function create_virtual_server() {
+
+	if [ -z $1 -o -z $2 -o -z $3 -o -z $4 ]; then
+		return 3
+	fi
+	
+	let "DIV=$2 % 128"
+	if [ $DIV -gt 0 ]; then
+		return 4
+	fi
+
+	if [ $3 -lt 5 ]; then
+		return 4
+	fi
+
+	if [ $5 -le 1 -o $5 -gt 3 ]; then
+		SUPPORT_TYPE=1
+	else
+		SUPPORT_TYPE=3
+	fi
+
+	# curl -H "X-Auth-Token: ${API_TOKEN}" $API_URL/images
+	
+	
+	
+	# echo curl -H "X-Auth-Token: ${API_TOKEN}" -d "vps_title=${1}&vps_type=VirtualServer&vps_memory=${2}&vps_hdd=${3}&vps_os=${4}&vps_admin=${SUPPORT_TYPE}" $API_URL/servers
+	if send_request_nocontent "$(curl -H "X-Auth-Token: ${API_TOKEN}" -d "vps_title=${1}&vps_type=VirtualServer&vps_memory=${2}&vps_hdd=${3}&vps_os=${4}&vps_admin=${SUPPORT_TYPE}" $API_URL/servers)"; then
+		return 0
+	else
+		return $?
+	fi
+}
 
 # init clodo-utils 
 init

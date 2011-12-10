@@ -13,7 +13,7 @@ function print_good() {
 
 
 
-if auth $CLODO_USER $CLODO_KEY "KH"; then
+if auth $CLODO_USER $CLODO_KEY "OVERSUN"; then
 	print_good "+ AUTH"
 #	echo $API_URL
 #	echo $API_TOKEN
