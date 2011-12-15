@@ -22,7 +22,7 @@ else
 	exit 1
 fi
 
-if create_virtual_server "TestCreate" 256 7 0 1; then
+if create_virtual_server "TestCreate" 256 7 1 1; then
 	print_good "+ CREATE SERVER"
 else
 	print_error "- CREATE SERVER ($?)"

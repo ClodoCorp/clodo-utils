@@ -15,7 +15,7 @@ function print_good() {
 
 if auth $CLODO_USER $CLODO_KEY "OVERSUN"; then
 	print_good "+ AUTH"
-#	echo $API_URL
+	echo $API_URL
 #	echo $API_TOKEN
 else
 	print_error "- AUTH ($?)"
@@ -29,7 +29,7 @@ fi
 #	exit 1
 #fi
 
-if reinstall_server $SERVER_NUM 551; then
+if reinstall_server $SERVER_NUM 1; then
 	print_good "+ REINSTALL"
 else
 	print_error "- REINSTALL ($?)"
